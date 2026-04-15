@@ -8,7 +8,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 public class Main {
 
-    private static final URI BASE_URI = URI.create("http://localhost:8080/");
+    private static final URI BASE_URI = URI.create("http://localhost:8080/api/v1/");
 
     public static HttpServer startServer() {
         ResourceConfig config = ResourceConfig.forApplication(new SmartCampusApplication());

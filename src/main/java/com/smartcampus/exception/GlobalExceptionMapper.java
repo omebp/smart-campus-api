@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -16,6 +17,17 @@ public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
 
     @Override
     public Response toResponse(Throwable exception) {
+        if (exception instanceof WebApplicationException) {
+            Response frameworkResponse = ((WebApplicationException) exception).getResponse();
+            if (frameworkResponse != null) {
+                int status = frameworkResponse.getStatus();
+                if (status >= 500) {
+                    LOGGER.log(Level.SEVERE, "Server-side web exception in Smart Campus API", exception);
+                }
+                return frameworkResponse;
+            }
+        }
+
         LOGGER.log(Level.SEVERE, "Unhandled exception in Smart Campus API", exception);
 
         Map<String, Object> body = new LinkedHashMap<>();
