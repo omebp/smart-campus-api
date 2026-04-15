@@ -91,8 +91,9 @@ curl -X POST http://localhost:8080/api/v1/sensors/OCC-001/readings \
 
 ```bash
 curl -X GET "http://localhost:8080/api/v1/sensors?type=CO2"
+```
 
-## 4. Report
+### 4. Report
 
 ### Part 1: Service Architecture & Setup
 
