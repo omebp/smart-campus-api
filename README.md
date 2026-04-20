@@ -134,7 +134,7 @@ POST methods in this API use `@Consumes(MediaType.APPLICATION_JSON)`. If a clien
 If the `Content-Type` is JSON but the body is malformed, Jersey/Jackson typically produce a `400 Bad Request` parsing/mapping error. In both cases, business logic is not executed and in-memory state is not modified.
 
 #### Question 3.2: `@QueryParam` filtering vs type in path
-Using `@QueryParam("type")` for `/sensors?type=CO2` is generally superior for collection filtering because filters are optional, composable, and non-hierarchical. It is easy to extend with additional criteria like `status`, `roomId`, pagination, and sorting without creating many path variants.
+Using `@QueryParam("type")` for `/sensors?type=CO2` is generally superior for collection filtering because filters are optional, composable, and non-hierarchical. It is easy to extend with additional criteria like `status`, `roomId`, and sorting without creating many path variants.
 
 A path like `/sensors/type/CO2` implies a fixed sub-collection hierarchy rather than an optional search criterion, and it scales poorly as filter combinations grow. Path segments are best for resource identity and hierarchy; query parameters are best for filtering/searching collections.
 
@@ -148,7 +148,7 @@ This provides clear separation of responsibilities, smaller and easier-to-test c
 ### Part 5: Advanced Error Handling & Logging
 
 #### Question 5.1: Why 422 is more accurate than 404 for missing linked references
-`404 Not Found` means the requested target resource/endpoint does not exist. In `POST /sensors`, the endpoint does exist, and the JSON can be syntactically valid, but the referenced `roomId` may not exist. That is a semantic validation failure inside an otherwise valid request, so `422 Unprocessable Entity` is more precise.
+`404 Not Found` means the requested target resource/endpoint does not exist. In `POST /sensors`, the endpoint does exist, and the JSON can be syntactically valid, but the referenced `roomId` may not exist. That is a validation failure inside an otherwise valid request, so `422 Unprocessable Entity` is more precise.
 
 This API applies that rule through `LinkedResourceNotFoundExceptionMapper`, which returns `422` when a sensor payload references a non-existent room.
 
